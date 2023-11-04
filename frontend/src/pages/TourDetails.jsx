@@ -10,7 +10,7 @@ import Booking from '../components/Booking/Booking'
 
 const TourDetails = () => {
   const { id } = useParams()
-  
+
   const reviewMsgRef = useRef('')
 
   const [tourRating, setTourRating] = useState(null)
@@ -29,7 +29,7 @@ const TourDetails = () => {
 
   }
 
-  return <>
+  return (
     <section>
       <Container>
         <Row>
@@ -97,12 +97,12 @@ const TourDetails = () => {
             </div>
           </Col>
           <Col lg='4'>
-            <Booking tour={tour} avgRating={avgRating}/>
+            <Booking tour={tour} avgRating={avgRating} />
           </Col>
         </Row>
       </Container>
     </section>
-  </>
+  )
 }
 
 export default TourDetails

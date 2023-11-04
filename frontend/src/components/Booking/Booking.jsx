@@ -1,9 +1,11 @@
 import React, {useState} from 'react'
 import './booking.css'
 import { Form, FormGroup, ListGroup, ListGroupItem, Button } from 'reactstrap'
+import {useNavigate} from 'react-router-dom'
 
 const Booking = ({ tour, avgRating }) => {
     const { price, reviews } = tour
+    const navigate = useNavigate()
 
     const [credentials, setCredentials] = useState({
         userId: '01', //later
@@ -18,10 +20,13 @@ const Booking = ({ tour, avgRating }) => {
         setCredentials(prev => ({...prev, [e.target.id] : e.target.value}))
     }
 
+    const serviceFee = 10
+    const totalAmount = Number(price) * Number(credentials.guestSize) + Number(serviceFee)
+
     //later
     const handleClick = e => {
         e.preventDefault()
-        console.log(credentials)
+        navigate('/thank-you')
     }
 
     return (
@@ -58,11 +63,11 @@ const Booking = ({ tour, avgRating }) => {
                     </ListGroupItem>
                     <ListGroupItem className='border-0 px-0'>
                         <h5>Biaya Pelayanan</h5>
-                        <span> Rp.2000</span>
+                        <span> Rp.{serviceFee}</span>
                     </ListGroupItem>
                     <ListGroupItem className='border-0 px-0 total'>
                         <h5>Total</h5>
-                        <span> Rp.129</span>
+                        <span> Rp.{totalAmount}</span>
                     </ListGroupItem>
                 </ListGroup>
                 <Button className='btn primary__btn w-100 mt-4' onClick={handleClick}>Booking sekarang</Button>
