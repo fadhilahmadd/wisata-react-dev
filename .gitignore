@@ -18,7 +18,6 @@ build
 /backend/.env.development.local
 /backend/.env.test.local
 /backend/.env.production.local
-/backend/
 /backend/npm-debug.log*
 /backend/yarn-debug.log*
 /backend/yarn-error.log*
