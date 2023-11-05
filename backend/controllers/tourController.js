@@ -8,7 +8,7 @@ export const createTour = async (req, res) => {
         res.status(200).json({
             success: true,
             message: 'Successfully created',
-            data   : savedTour
+            data: savedTour
         })
     } catch (err) {
         res.status(500).json({
@@ -25,12 +25,12 @@ export const updateTour = async (req, res) => {
     try {
         const updatedTour = await Tour.findByIdAndUpdate(id, {
             $set: req.body
-        }, {new: true})
+        }, { new: true })
 
         res.status(200).json({
             success: true,
             message: 'Successfully update',
-            data   : updatedTour
+            data: updatedTour
         })
     } catch (err) {
         res.status(500).json({
@@ -49,7 +49,7 @@ export const deleteTour = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Successfully delete',            
+            message: 'Successfully delete',
         })
     } catch (err) {
         res.status(500).json({
@@ -64,12 +64,12 @@ export const getSingleTour = async (req, res) => {
     const id = req.params.id
 
     try {
-        const tour = await Tour.findById(id)
+        const tour = await Tour.findById(id).populate('reviews')
 
         res.status(200).json({
             success: true,
             message: 'Successfully get tour',
-            data   : tour
+            data: tour
         })
     } catch (err) {
         res.status(404).json({
@@ -86,13 +86,13 @@ export const getAllTour = async (req, res) => {
     const page = parseInt(req.query.page)
 
     try {
-        const tours = await Tour.find({}).skip(page * 8).limit(8)
+        const tours = await Tour.find({}).populate('reviews').skip(page * 8).limit(8)
 
-        res.status(200).json({            
+        res.status(200).json({
             success: true,
-            count  : tours.length,
+            count: tours.length,
             message: 'Successfully get tour',
-            data   : tours
+            data: tours
         })
     } catch (err) {
         res.status(404).json({
@@ -109,12 +109,12 @@ export const getTourBySearch = async (req, res) => {
     const maxGroupSize = parseInt(req.query.maxGroupSize)
 
     try {
-        const tours = await Tour.find({city, distance:{$gte:distance}, maxGroupSize:{$gte:maxGroupSize}})
+        const tours = await Tour.find({ city, distance: { $gte: distance }, maxGroupSize: { $gte: maxGroupSize } }).populate('reviews')
 
-        res.status(200).json({            
-            success: true,            
+        res.status(200).json({
+            success: true,
             message: 'Successfully get tour',
-            data   : tours
+            data: tours
         })
     } catch (err) {
         res.status(404).json({
@@ -127,12 +127,12 @@ export const getTourBySearch = async (req, res) => {
 // get featured
 export const getFeaturedTour = async (req, res) => {
     try {
-        const tours = await Tour.find({featured:true}).limit(8)
+        const tours = await Tour.find({ featured: true }).populate('reviews').limit(8)
 
-        res.status(200).json({            
-            success: true,            
+        res.status(200).json({
+            success: true,
             message: 'Successfully get tour',
-            data   : tours
+            data: tours
         })
     } catch (err) {
         res.status(404).json({
@@ -149,7 +149,7 @@ export const getTourCount = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            data   : tourCount
+            data: tourCount
         })
     } catch (err) {
         res.status(500).json({
