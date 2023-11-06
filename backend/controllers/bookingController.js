@@ -16,3 +16,39 @@ export const createBooking = async (req, res) => {
         })
     }
 }
+
+export const getBooking = async (req, res) => {
+    const id = req.params.id
+
+    try {
+        const book = await Booking.findById(id)
+
+        res.status(200).json({
+            success: true,
+            message: 'successfull',
+            data: book
+        })
+    } catch (err) {
+        res.status(404).json({
+            success: false,
+            message: 'not found'
+        })
+    }
+}
+
+export const getAllBooking = async (req, res) => {    
+    try {
+        const books = await Booking.find()
+
+        res.status(200).json({
+            success: true,
+            message: 'successfull',
+            data: books
+        })
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'internal server error'
+        })
+    }
+}
