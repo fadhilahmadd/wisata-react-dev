@@ -25,7 +25,7 @@ export const register = async (req, res) => {
     } catch (err) {
         res.status(500).json({
             success: false,
-            message: 'failed to create'
+            message: 'Gagal Membuat Akun. Email Sudah Ada!'
         })
     }
 }

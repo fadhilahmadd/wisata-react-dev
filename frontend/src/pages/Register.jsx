@@ -26,9 +26,9 @@ const Register = () => {
     e.preventDefault()
     try {
       const res = await fetch(`${BASE_URL}/auth/register`, {
-        method: 'post',
-        header:{
-          'content-type':'application/json'
+        method: "post",
+        headers:{
+          "content-type":"application/json"
         },
         body: JSON.stringify(credentials)
       })
@@ -60,6 +60,9 @@ const Register = () => {
                 <Form onSubmit={handleClick}>
                   <FormGroup>
                     <input type="text" placeholder='Username' required id='username' onChange={handleChange} />
+                  </FormGroup>
+                  <FormGroup>
+                    <input type="email" placeholder='Email' required id='email' onChange={handleChange} />
                   </FormGroup>
                   <FormGroup>
                     <input type="password" placeholder='Password' required id='password' onChange={handleChange} />
