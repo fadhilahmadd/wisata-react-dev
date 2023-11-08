@@ -1,32 +1,59 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import './booking.css'
 import { Form, FormGroup, ListGroup, ListGroupItem, Button } from 'reactstrap'
 import {useNavigate} from 'react-router-dom'
+import { AuthContext } from '../../context/AuthContext'
+import { BASE_URL } from '../../utils/config'
 
 const Booking = ({ tour, avgRating }) => {
-    const { price, reviews } = tour
+    const { price, reviews, title } = tour
     const navigate = useNavigate()
 
-    const [credentials, setCredentials] = useState({
-        userId: '01', //later
-        userEmail: 'example@gmail.com',
-        fullName: '',
-        phone: '',
+    const {user} = useContext(AuthContext)
+
+    const [booking, setBooking] = useState({
+        userId   : user && user._id,
+        userEmail: user && user.email,
+        tourName : title,
+        fullName : '',
+        phone    : '',
         guestSize: 1,
-        bookAt: ''
+        bookAt   : ''
     })
 
     const handleChange = e => {
-        setCredentials(prev => ({...prev, [e.target.id] : e.target.value}))
+        setBooking(prev => ({...prev, [e.target.id] : e.target.value}))
     }
 
-    const serviceFee = 10
-    const totalAmount = Number(price) * Number(credentials.guestSize) + Number(serviceFee)
+    const serviceFee = 5000
+    const totalAmount = Number(price) * Number(booking.guestSize) + Number(serviceFee)
 
-    //later
-    const handleClick = e => {
+    const handleClick = async e => {
         e.preventDefault()
-        navigate('/thank-you')
+        console.log(booking);
+
+        try {
+            if(!user || user === undefined || user === null){
+                return alert('Harap Login Terlebihdahulu')
+            }
+
+            const res = await fetch(`${BASE_URL}/booking`,{
+                method: 'post',
+                headers: {
+                    'content-type':'application/json'
+                },
+                credentials:'include',
+                body: JSON.stringify(booking)
+            })
+
+            const result = await res.json()
+            if(!res.ok) {
+                return alert(result.message)
+            }
+            navigate('/thank-you')
+        } catch (err) {
+            alert(err.message)
+        }
     }
 
     return (
